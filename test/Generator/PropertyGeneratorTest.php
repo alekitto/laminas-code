@@ -3,6 +3,8 @@
 namespace LaminasTest\Code\Generator;
 
 use Generator;
+use Laminas\Code\Generator\AttributeGenerator;
+use Laminas\Code\Generator\AttributeGenerator\AttributePrototype;
 use Laminas\Code\Generator\DocBlock\Tag\VarTag;
 use Laminas\Code\Generator\DocBlockGenerator;
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
@@ -420,5 +422,34 @@ EOS;
             $property->generate(),
             'A property type can be dropped'
         );
+    }
+
+
+    public function testPropertyCanHaveDocBlockAndAttributes(): void
+    {
+        $attributeGenerator = AttributeGenerator::fromPrototype(
+            new AttributePrototype('FirstAttribute', ['firstArgument' => 'abc', 'secondArgument' => 12]),
+            new AttributePrototype('FirstAttribute', ['firstArgument' => 'abc', 'secondArgument' => 13]),
+            new AttributePrototype('SecondAttribute'),
+        );
+        $codeGenProperty    = new PropertyGenerator(
+            'someVal',
+            'some string value',
+            PropertyGenerator::FLAG_STATIC | PropertyGenerator::FLAG_PROTECTED,
+            attributes: $attributeGenerator
+        );
+
+        $codeGenProperty->setDocBlock('@var string $someVal This is some val');
+
+        $expected = <<<EOS
+    /**
+     * @var string \$someVal This is some val
+     */
+    #[FirstAttribute(firstArgument: 'abc', secondArgument: 12)]
+    #[FirstAttribute(firstArgument: 'abc', secondArgument: 13)]
+    #[SecondAttribute]
+    protected static \$someVal = 'some string value';
+EOS;
+        self::assertSame($expected, $codeGenProperty->generate());
     }
 }

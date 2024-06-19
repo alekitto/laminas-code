@@ -20,6 +20,7 @@ abstract class AbstractMemberGenerator extends AbstractGenerator
     public const VISIBILITY_PRIVATE   = 'private';
 
     protected ?DocBlockGenerator $docBlock = null;
+    protected ?AttributeGenerator $attributes = null;
 
     protected string $name = '';
 
@@ -222,5 +223,15 @@ abstract class AbstractMemberGenerator extends AbstractGenerator
     public function getDocBlock()
     {
         return $this->docBlock;
+    }
+
+    public function setAttributes(AttributeGenerator $attributes): void
+    {
+        $this->attributes = $attributes;
+    }
+
+    public function getAttributes(): ?AttributeGenerator
+    {
+        return $this->attributes;
     }
 }

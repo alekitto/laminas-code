@@ -88,7 +88,9 @@ final class AttributeGeneratorByReflectionTest extends TestCase
     private function giveGenerator(object $class): AttributeGenerator
     {
         $reflection = new ReflectionClass($class);
+        $generator  = AttributeGenerator::fromReflection($reflection);
+        $generator->setIndentation('');
 
-        return AttributeGenerator::fromReflection($reflection);
+        return $generator;
     }
 }

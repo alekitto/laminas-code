@@ -2,6 +2,8 @@
 
 namespace LaminasTest\Code\Generator;
 
+use Laminas\Code\Generator\AttributeGenerator;
+use Laminas\Code\Generator\AttributeGenerator\AttributePrototype;
 use Laminas\Code\Generator\DocBlockGenerator;
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use Laminas\Code\Generator\MethodGenerator;
@@ -519,5 +521,36 @@ PHP;
             [Php80Types::class, 'staticType', 'static', 'static'],
             [Php80Types::class, 'selfAndBoolType', Php80Types::class . '|bool', '\\' . Php80Types::class . '|bool'],
         ];
+    }
+
+    public function testMethodCanHaveAttributes()
+    {
+        $attributeGenerator      = AttributeGenerator::fromPrototype(
+            new AttributePrototype('FirstAttribute', ['firstArgument' => 'abc', 'secondArgument' => 12]),
+            new AttributePrototype('FirstAttribute', ['firstArgument' => 'abc', 'secondArgument' => 13]),
+            new AttributePrototype('SecondAttribute'),
+        );
+        $methodGeneratorProperty = new MethodGenerator(
+            'someFoo',
+            [],
+            MethodGenerator::FLAG_STATIC | MethodGenerator::FLAG_PROTECTED,
+            null,
+            '@var string $someVal This is some val',
+            attributes: $attributeGenerator,
+        );
+
+        $expected = <<<EOS
+    /**
+     * @var string \$someVal This is some val
+     */
+    #[FirstAttribute(firstArgument: 'abc', secondArgument: 12)]
+    #[FirstAttribute(firstArgument: 'abc', secondArgument: 13)]
+    #[SecondAttribute]
+    protected static function someFoo()
+    {
+    }
+
+EOS;
+        self::assertSame($expected, $methodGeneratorProperty->generate());
     }
 }

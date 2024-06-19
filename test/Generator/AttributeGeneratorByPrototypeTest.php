@@ -105,6 +105,9 @@ final class AttributeGeneratorByPrototypeTest extends TestCase
 
     private function giveGenerator(AttributePrototype ...$prototype): AttributeGenerator
     {
-        return AttributeGenerator::fromPrototype(...$prototype);
+        $generator = AttributeGenerator::fromPrototype(...$prototype);
+        $generator->setIndentation('');
+
+        return $generator;
     }
 }
