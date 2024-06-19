@@ -523,7 +523,7 @@ PHP;
         ];
     }
 
-    public function testMethodCanHaveAttributes()
+    public function testMethodCanHaveAttributes(): void
     {
         $attributeGenerator      = AttributeGenerator::fromPrototype(
             new AttributePrototype('FirstAttribute', ['firstArgument' => 'abc', 'secondArgument' => 12]),

@@ -504,7 +504,9 @@ CODE;
     {
         $attributeName      = 'AnyAttribute';
         $attributeArguments = ['argument' => 2];
-        $attributeGenerator = AttributeGenerator::fromPrototype(new AttributePrototype($attributeName, $attributeArguments));
+        $attributeGenerator = AttributeGenerator::fromPrototype(
+            new AttributePrototype($attributeName, $attributeArguments)
+        );
 
         $classGenerator = new ClassGenerator(
             'AnyClassName',

@@ -13,6 +13,7 @@ use Laminas\Code\Generator\PropertyGenerator;
 use Laminas\Code\Generator\PropertyValueGenerator;
 use Laminas\Code\Generator\TypeGenerator;
 use Laminas\Code\Generator\ValueGenerator;
+use Laminas\Code\Generator\ValueGeneratorInterface;
 use Laminas\Code\Reflection\ClassReflection;
 use Laminas\Code\Reflection\PropertyReflection;
 use LaminasTest\Code\Generator\TestAsset\ClassWithTypedProperty;
@@ -287,7 +288,7 @@ EOS;
         self::assertSame('SampleProperty', $propertyGenerator->getName());
         self::assertFalse($propertyGenerator->isConst());
         self::assertFalse($propertyGenerator->isReadonly());
-        self::assertInstanceOf(ValueGenerator::class, $propertyGenerator->getDefaultValue());
+        self::assertInstanceOf(ValueGeneratorInterface::class, $propertyGenerator->getDefaultValue());
         self::assertInstanceOf(DocBlockGenerator::class, $propertyGenerator->getDocBlock());
         self::assertTrue($propertyGenerator->isAbstract());
         self::assertTrue($propertyGenerator->isFinal());
@@ -423,7 +424,6 @@ EOS;
             'A property type can be dropped'
         );
     }
-
 
     public function testPropertyCanHaveDocBlockAndAttributes(): void
     {

@@ -11,11 +11,11 @@ namespace Laminas\Code\Generator\AttributeGenerator;
 final class AttributePart
 {
     public const T_ATTR_START = '#[';
-    public const T_ATTR_END = ']';
+    public const T_ATTR_END   = ']';
 
     public const T_ATTR_ARGUMENTS_LIST_START = '(';
-    public const T_ATTR_ARGUMENTS_LIST_END = ')';
+    public const T_ATTR_ARGUMENTS_LIST_END   = ')';
 
     public const T_ATTR_ARGUMENTS_LIST_ASSIGN_OPERAND = ': ';
-    public const T_ATTR_ARGUMENTS_LIST_SEPARATOR = ', ';
+    public const T_ATTR_ARGUMENTS_LIST_SEPARATOR      = ', ';
 }
