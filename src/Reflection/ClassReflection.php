@@ -13,6 +13,7 @@ use function array_unshift;
 use function file;
 use function file_exists;
 use function implode;
+use function method_exists;
 use function strstr;
 
 /**
@@ -43,6 +44,15 @@ class ClassReflection extends ReflectionClass implements ReflectionInterface
         $this->docBlock = new DocBlockReflection($this);
 
         return $this->docBlock;
+    }
+
+    public function isReadOnly(): bool
+    {
+        if (! method_exists(parent::class, 'isReadOnly')) {
+            return false;
+        }
+
+        return (bool) parent::isReadOnly();
     }
 
     /**

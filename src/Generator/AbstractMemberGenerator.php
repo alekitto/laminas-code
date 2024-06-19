@@ -19,7 +19,7 @@ abstract class AbstractMemberGenerator extends AbstractGenerator
     public const VISIBILITY_PROTECTED = 'protected';
     public const VISIBILITY_PRIVATE   = 'private';
 
-    protected ?DocBlockGenerator $docBlock = null;
+    protected ?DocBlockGenerator $docBlock    = null;
     protected ?AttributeGenerator $attributes = null;
 
     protected string $name = '';

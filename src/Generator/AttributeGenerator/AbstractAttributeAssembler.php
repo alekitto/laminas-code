@@ -6,7 +6,7 @@ namespace Laminas\Code\Generator\AttributeGenerator;
 
 use ReflectionAttribute;
 
-abstract class AbstractAttributeAssembler implements AttributeAssembler
+abstract class AbstractAttributeAssembler implements AttributeAssemblerInterface
 {
     public function __construct(private ReflectionAttribute $attributePrototype)
     {

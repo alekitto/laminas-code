@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Laminas\Code\Generator;
 
-use Laminas\Code\Generator\AttributeGenerator\AttributeAssembler;
+use Laminas\Code\Generator\AttributeGenerator\AttributeAssemblerInterface;
 use Laminas\Code\Generator\AttributeGenerator\AttributePrototype;
 use Laminas\Code\Generator\AttributeGenerator\AttributeWithArgumentsAssembler;
 use Laminas\Code\Generator\AttributeGenerator\SimpleAttributeAssembler;
@@ -18,6 +18,10 @@ final class AttributeGenerator extends AbstractGenerator
 {
     private array $assemblers;
 
+    /**
+     * @param non-empty-string|null $attributeName
+     * @param mixed[] $arguments
+     */
     public function __construct(?string $attributeName = null, array $arguments = [])
     {
         $assemblers = [];
@@ -31,11 +35,12 @@ final class AttributeGenerator extends AbstractGenerator
     public function generate(): string
     {
         $generatedAttributes = array_map(
-            static fn (AttributeAssembler $attributeAssembler) => $attributeAssembler->assemble(),
+            static fn (AttributeAssemblerInterface $attributeAssembler) => $attributeAssembler->assemble(),
             $this->assemblers,
         );
 
-        return $this->getIndentation() . implode(AbstractGenerator::LINE_FEED . $this->getIndentation(), $generatedAttributes);
+        return $this->getIndentation()
+            . implode(AbstractGenerator::LINE_FEED . $this->getIndentation(), $generatedAttributes);
     }
 
     public static function fromPrototype(AttributePrototype ...$attributePrototype): self
@@ -60,8 +65,9 @@ final class AttributeGenerator extends AbstractGenerator
         return $generator;
     }
 
-    private static function negotiateAssembler(ReflectionAttribute|AttributePrototype $reflectionPrototype): AttributeAssembler
-    {
+    private static function negotiateAssembler(
+        ReflectionAttribute|AttributePrototype $reflectionPrototype
+    ): AttributeAssemblerInterface {
         $hasArguments = ! empty($reflectionPrototype->getArguments());
 
         if ($hasArguments) {

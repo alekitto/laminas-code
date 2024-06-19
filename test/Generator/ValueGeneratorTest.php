@@ -86,13 +86,13 @@ class ValueGeneratorTest extends TestCase
     {
         return [
             [
-                new PropertyValueGenerator([], PropertyValueGenerator::TYPE_ARRAY, ValueGenerator::OUTPUT_SINGLE_LINE),
+                new PropertyValueGenerator([], ValueGenerator::TYPE_ARRAY, ValueGenerator::OUTPUT_SINGLE_LINE),
                 '    public const FOO = [];',
             ],
             [
                 new PropertyValueGenerator(
                     [],
-                    PropertyValueGenerator::TYPE_ARRAY_LONG,
+                    ValueGenerator::TYPE_ARRAY_LONG,
                     ValueGenerator::OUTPUT_SINGLE_LINE
                 ),
                 '    public const FOO = array();',
@@ -100,21 +100,21 @@ class ValueGeneratorTest extends TestCase
             [
                 new PropertyValueGenerator(
                     [],
-                    PropertyValueGenerator::TYPE_ARRAY_SHORT,
+                    ValueGenerator::TYPE_ARRAY_SHORT,
                     ValueGenerator::OUTPUT_SINGLE_LINE
                 ),
                 '    public const FOO = [];',
             ],
-            [new PropertyValueGenerator(true, PropertyValueGenerator::TYPE_BOOL), '    public const FOO = true;'],
-            [new PropertyValueGenerator(true, PropertyValueGenerator::TYPE_BOOLEAN), '    public const FOO = true;'],
-            [new PropertyValueGenerator(1, PropertyValueGenerator::TYPE_INT), '    public const FOO = 1;'],
-            [new PropertyValueGenerator(1, PropertyValueGenerator::TYPE_INTEGER), '    public const FOO = 1;'],
-            [new PropertyValueGenerator(0.1, PropertyValueGenerator::TYPE_DOUBLE), '    public const FOO = 0.1;'],
-            [new PropertyValueGenerator(0.1, PropertyValueGenerator::TYPE_FLOAT), '    public const FOO = 0.1;'],
-            [new PropertyValueGenerator('bar', PropertyValueGenerator::TYPE_STRING), "    public const FOO = 'bar';"],
-            [new PropertyValueGenerator(null, PropertyValueGenerator::TYPE_NULL), '    public const FOO = null;'],
+            [new PropertyValueGenerator(true, ValueGenerator::TYPE_BOOL), '    public const FOO = true;'],
+            [new PropertyValueGenerator(true, ValueGenerator::TYPE_BOOLEAN), '    public const FOO = true;'],
+            [new PropertyValueGenerator(1, ValueGenerator::TYPE_INT), '    public const FOO = 1;'],
+            [new PropertyValueGenerator(1, ValueGenerator::TYPE_INTEGER), '    public const FOO = 1;'],
+            [new PropertyValueGenerator(0.1, ValueGenerator::TYPE_DOUBLE), '    public const FOO = 0.1;'],
+            [new PropertyValueGenerator(0.1, ValueGenerator::TYPE_FLOAT), '    public const FOO = 0.1;'],
+            [new PropertyValueGenerator('bar', ValueGenerator::TYPE_STRING), "    public const FOO = 'bar';"],
+            [new PropertyValueGenerator(null, ValueGenerator::TYPE_NULL), '    public const FOO = null;'],
             [
-                new PropertyValueGenerator('PHP_EOL', PropertyValueGenerator::TYPE_CONSTANT),
+                new PropertyValueGenerator('PHP_EOL', ValueGenerator::TYPE_CONSTANT),
                 '    public const FOO = PHP_EOL;',
             ],
         ];

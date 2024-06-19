@@ -6,16 +6,15 @@ namespace LaminasTest\Code\Generator;
 
 use Laminas\Code\Generator\AttributeGenerator;
 use Laminas\Code\Generator\AttributeGenerator\AttributePrototype;
+use LaminasTest\Code\Generator\Fixture\AttributeGenerator\AttributeWithArguments;
+use LaminasTest\Code\Generator\Fixture\AttributeGenerator\SimpleAttribute;
 use PHPUnit\Framework\TestCase;
 
 final class AttributeGeneratorByPrototypeTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function generate_single_attribute(): void
+    public function testGenerateSingleAttribute(): void
     {
-        $prototype = new AttributePrototype('LaminasTest\Code\Generator\Fixture\AttributeGenerator\SimpleAttribute');
+        $prototype = new AttributePrototype(SimpleAttribute::class);
         $generator = $this->giveGenerator($prototype);
 
         $result = $generator->generate();
@@ -24,14 +23,11 @@ final class AttributeGeneratorByPrototypeTest extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    /**
-     * @test
-     */
-    public function generate_many_single_attributes(): void
+    public function testGenerateManySingleAttributes(): void
     {
-        $prototype1 = new AttributePrototype('LaminasTest\Code\Generator\Fixture\AttributeGenerator\SimpleAttribute');
-        $prototype2 = new AttributePrototype('LaminasTest\Code\Generator\Fixture\AttributeGenerator\SimpleAttribute');
-        $generator = $this->giveGenerator($prototype1, $prototype2);
+        $prototype1 = new AttributePrototype(SimpleAttribute::class);
+        $prototype2 = new AttributePrototype(SimpleAttribute::class);
+        $generator  = $this->giveGenerator($prototype1, $prototype2);
 
         $result = $generator->generate();
 
@@ -39,17 +35,14 @@ final class AttributeGeneratorByPrototypeTest extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    /**
-     * @test
-     */
-    public function generate_single_attribute_with_arguments(): void
+    public function testGenerateSingleAttributeWithArguments(): void
     {
         $prototype = new AttributePrototype(
-            'LaminasTest\Code\Generator\Fixture\AttributeGenerator\AttributeWithArguments',
+            AttributeWithArguments::class,
             [
-                'boolArgument' => false,
+                'boolArgument'   => false,
                 'stringArgument' => 'char chain',
-                'intArgument' => 16,
+                'intArgument'    => 16,
             ],
         );
         $generator = $this->giveGenerator($prototype);
@@ -60,21 +53,18 @@ final class AttributeGeneratorByPrototypeTest extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    /**
-     * @test
-     */
-    public function generate_many_attributes_with_arguments(): void
+    public function testGenerateManyAttributesWithArguments(): void
     {
         $prototype1 = new AttributePrototype(
-            'LaminasTest\Code\Generator\Fixture\AttributeGenerator\AttributeWithArguments',
+            AttributeWithArguments::class,
             [
-                'boolArgument' => false,
+                'boolArgument'   => false,
                 'stringArgument' => 'char chain',
-                'intArgument' => 16,
+                'intArgument'    => 16,
             ],
         );
-        $prototype2 = new AttributePrototype('LaminasTest\Code\Generator\Fixture\AttributeGenerator\AttributeWithArguments');
-        $generator = $this->giveGenerator($prototype1, $prototype2);
+        $prototype2 = new AttributePrototype(AttributeWithArguments::class);
+        $generator  = $this->giveGenerator($prototype1, $prototype2);
 
         $result = $generator->generate();
 
@@ -82,20 +72,18 @@ final class AttributeGeneratorByPrototypeTest extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    /**
-     * @test
-     */
-    public function mix_simple_attributes_with_attributes_with_arguments(): void
+    public function testMixSimpleAttributesWithAttributesWithArguments(): void
     {
         $prototype1 = new AttributePrototype(
-            'LaminasTest\Code\Generator\Fixture\AttributeGenerator\AttributeWithArguments', 
+            AttributeWithArguments::class,
             [
-            'stringArgument' => 'any string',
-            'intArgument' => 1,
-            'boolArgument' => true,
-        ]);
-        $prototype2 = new AttributePrototype('LaminasTest\Code\Generator\Fixture\AttributeGenerator\SimpleAttribute');
-        $generator = $this->giveGenerator($prototype1, $prototype2);
+                'stringArgument' => 'any string',
+                'intArgument'    => 1,
+                'boolArgument'   => true,
+            ]
+        );
+        $prototype2 = new AttributePrototype(SimpleAttribute::class);
+        $generator  = $this->giveGenerator($prototype1, $prototype2);
 
         $result = $generator->generate();
 

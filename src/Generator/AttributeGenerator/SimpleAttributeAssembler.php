@@ -27,7 +27,7 @@ final class SimpleAttributeAssembler extends AbstractAttributeAssembler
     {
         $arguments = $this->getArguments();
 
-        if (!empty($arguments)) {
+        if (! empty($arguments)) {
             throw new NotEmptyArgumentListException('Argument list has to be empty');
         }
     }

@@ -15,13 +15,10 @@ use ReflectionClass;
 
 final class AttributeGeneratorByReflectionTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function generate_single_attribute(): void
+    public function testGenerateSingleAttribute(): void
     {
         $classWithSimpleAttribute = new ClassWithSimpleAttribute();
-        $generator = $this->giveGenerator($classWithSimpleAttribute);
+        $generator                = $this->giveGenerator($classWithSimpleAttribute);
 
         $result = $generator->generate();
 
@@ -29,13 +26,10 @@ final class AttributeGeneratorByReflectionTest extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    /**
-     * @test
-     */
-    public function generate_many_single_attributes(): void
+    public function testGenerateManySingleAttributes(): void
     {
         $classWithSimpleAttribute = new ClassWithTwoSameSimpleAttributes();
-        $generator = $this->giveGenerator($classWithSimpleAttribute);
+        $generator                = $this->giveGenerator($classWithSimpleAttribute);
 
         $result = $generator->generate();
 
@@ -43,13 +37,10 @@ final class AttributeGeneratorByReflectionTest extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    /**
-     * @test
-     */
-    public function generate_single_attribute_with_arguments(): void
+    public function testGenerateSingleAttributeWithArguments(): void
     {
         $classWithSimpleAttribute = new ClassWithArgumentWithAttributes();
-        $generator = $this->giveGenerator($classWithSimpleAttribute);
+        $generator                = $this->giveGenerator($classWithSimpleAttribute);
 
         $result = $generator->generate();
 
@@ -57,13 +48,10 @@ final class AttributeGeneratorByReflectionTest extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    /**
-     * @test
-     */
-    public function generate_many_attributes_with_arguments(): void
+    public function testGenerateManyAttributesWithArguments(): void
     {
         $classWithSimpleAttribute = new ClassWithManyArgumentsWithAttributes();
-        $generator = $this->giveGenerator($classWithSimpleAttribute);
+        $generator                = $this->giveGenerator($classWithSimpleAttribute);
 
         $result = $generator->generate();
 
@@ -71,13 +59,10 @@ final class AttributeGeneratorByReflectionTest extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    /**
-     * @test
-     */
-    public function mix_simple_attributes_with_attributes_with_arguments(): void
+    public function testMixSimpleAttributesWithAttributesWithArguments(): void
     {
         $classWithSimpleAttribute = new ClassWithSimpleAndArgumentedAttributes();
-        $generator = $this->giveGenerator($classWithSimpleAttribute);
+        $generator                = $this->giveGenerator($classWithSimpleAttribute);
 
         $result = $generator->generate();
 

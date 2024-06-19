@@ -94,9 +94,6 @@
     <MixedArgumentTypeCoercion>
       <code>$name</code>
     </MixedArgumentTypeCoercion>
-    <MixedAssignment>
-      <code>$value</code>
-    </MixedAssignment>
     <MixedOperand>
       <code>static::IMPLEMENTS_KEYWORD</code>
       <code>static::OBJECT_TYPE</code>
@@ -477,6 +474,11 @@
       <code>new static()</code>
     </UnsafeInstantiation>
   </file>
+  <file src="src/Generator/PropertyValueGenerator.php">
+    <PossiblyUnusedMethod>
+      <code>fromValueGenerator</code>
+    </PossiblyUnusedMethod>
+  </file>
   <file src="src/Generator/TraitGenerator.php">
     <DeprecatedMethod>
       <code>DocBlockGenerator::fromArray($value)</code>
@@ -639,11 +641,17 @@
     <RedundantCastGivenDocblockType>
       <code>(int) $arrayDepth</code>
       <code>(string) $outputMode</code>
-      <code>(string) $type</code>
     </RedundantCastGivenDocblockType>
     <UnevaluatedCode>
       <code><![CDATA['float']]></code>
     </UnevaluatedCode>
+  </file>
+  <file src="src/Generator/ValueGeneratorInterface.php">
+    <PossiblyUnusedReturnValue>
+      <code>self</code>
+      <code>self</code>
+      <code>self</code>
+    </PossiblyUnusedReturnValue>
   </file>
   <file src="src/Generic/Prototype/PrototypeClassFactory.php">
     <MixedAssignment>
@@ -1537,6 +1545,20 @@
       <code>testSourceContentGetterAndSetter</code>
       <code>testToString</code>
     </MissingReturnType>
+  </file>
+  <file src="test/Generator/Fixture/AttributeGenerator/AttributeWithArguments.php">
+    <PossiblyUnusedProperty>
+      <code>$boolArgument</code>
+      <code>$intArgument</code>
+      <code>$stringArgument</code>
+    </PossiblyUnusedProperty>
+  </file>
+  <file src="test/Generator/Fixture/AttributeGenerator/ClassWithManyArgumentsWithAttributes.php">
+    <TooFewArguments>
+      <code>AttributeWithArguments</code>
+      <code>AttributeWithArguments</code>
+      <code>AttributeWithArguments</code>
+    </TooFewArguments>
   </file>
   <file src="test/Generator/InterfaceGeneratorTest.php">
     <ArgumentTypeCoercion>

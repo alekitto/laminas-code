@@ -6,7 +6,7 @@ namespace LaminasTest\Code\Generator\Fixture\AttributeGenerator;
 
 use Attribute;
 
-#[Attribute]
+#[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_CLASS)]
 class SimpleAttribute
 {
 }

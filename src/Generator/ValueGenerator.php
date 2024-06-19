@@ -25,7 +25,7 @@ use function sprintf;
 use function str_contains;
 use function str_repeat;
 
-class ValueGenerator extends AbstractGenerator
+class ValueGenerator extends AbstractGenerator implements ValueGeneratorInterface
 {
     /**#@+
      * Constant values
@@ -182,10 +182,7 @@ class ValueGenerator extends AbstractGenerator
         return $this->constants;
     }
 
-    /**
-     * @return bool
-     */
-    public function isValidConstantType()
+    public function isValidConstantType(): bool
     {
         if ($this->type === self::TYPE_AUTO) {
             $type = $this->getAutoDeterminedType($this->value);
@@ -213,37 +210,29 @@ class ValueGenerator extends AbstractGenerator
     }
 
     /**
-     * @param  mixed $value
      * @return ValueGenerator
      */
-    public function setValue($value)
+    public function setValue(mixed $value): self
     {
         $this->value = $value;
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }
 
     /**
-     * @param  string $type
      * @return ValueGenerator
      */
-    public function setType($type)
+    public function setType(string $type): self
     {
-        $this->type = (string) $type;
+        $this->type = $type;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -252,7 +241,7 @@ class ValueGenerator extends AbstractGenerator
      * @param  int $arrayDepth
      * @return ValueGenerator
      */
-    public function setArrayDepth($arrayDepth)
+    public function setArrayDepth($arrayDepth): self
     {
         $this->arrayDepth = (int) $arrayDepth;
         return $this;
@@ -361,7 +350,7 @@ class ValueGenerator extends AbstractGenerator
 
         if ($isArrayType) {
             foreach ($value as &$curValue) {
-                if ($curValue instanceof self) {
+                if ($curValue instanceof ValueGeneratorInterface) {
                     continue;
                 }
 
@@ -415,7 +404,7 @@ class ValueGenerator extends AbstractGenerator
                 $outputParts = [];
                 $noKeyIndex  = 0;
                 foreach ($value as $n => $v) {
-                    /** @var ValueGenerator $v */
+                    /** @var ValueGeneratorInterface $v */
                     $v->setArrayDepth($this->arrayDepth + 1);
                     $partV = $v->generate();
                     $short = false;

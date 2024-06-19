@@ -94,10 +94,7 @@ class ClassGenerator extends AbstractGenerator implements TraitUsageInterface
 
         $cg->setAbstract($classReflection->isAbstract());
         $cg->setFinal($classReflection->isFinal());
-
-        if (method_exists($classReflection, 'isReadonly')) {
-            $cg->setReadonly((bool) $classReflection->isReadonly());
-        }
+        $cg->setReadonly($classReflection->isReadonly());
 
         // set the namespace
         if ($classReflection->inNamespace()) {
@@ -215,7 +212,7 @@ class ClassGenerator extends AbstractGenerator implements TraitUsageInterface
                     $cg->setDocBlock($docBlock);
                     break;
                 case 'attribute':
-                    if (!($value instanceof AttributeGenerator)) {
+                    if (! $value instanceof AttributeGenerator) {
                         throw new InvalidArgumentException(sprintf('Only %s is supported', AttributeGenerator::class));
                     }
 
@@ -243,7 +240,6 @@ class ClassGenerator extends AbstractGenerator implements TraitUsageInterface
     }
 
     /**
-     * @param string                               $name
      * @param string                               $namespaceName
      * @param int|int[]|null                       $flags
      * @param class-string|null                    $extends
@@ -253,15 +249,15 @@ class ClassGenerator extends AbstractGenerator implements TraitUsageInterface
      * @param MethodGenerator[]|string[]|array[]   $methods
      */
     public function __construct(
-        string $name = null,
+        ?string $name = null,
         $namespaceName = null,
         $flags = null,
         $extends = null,
         array $interfaces = [],
         array $properties = [],
         array $methods = [],
-        DocBlockGenerator $docBlock = null,
-        AttributeGenerator $attributes = null,
+        ?DocBlockGenerator $docBlock = null,
+        ?AttributeGenerator $attributes = null,
     ) {
         $this->traitUsageGenerator = new TraitUsageGenerator($this);
 
