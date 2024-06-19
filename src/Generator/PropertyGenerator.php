@@ -32,7 +32,8 @@ class PropertyGenerator extends AbstractMemberGenerator
         ?string $name = null,
         $defaultValue = null,
         $flags = self::FLAG_PUBLIC,
-        ?TypeGenerator $type = null
+        ?TypeGenerator $type = null,
+        ?AttributeGenerator $attributes = null
     ) {
         parent::__construct();
 
@@ -47,6 +48,9 @@ class PropertyGenerator extends AbstractMemberGenerator
         }
 
         $this->type = $type;
+        if ($attributes) {
+            $this->setAttributes($attributes);
+        }
     }
 
     /** @return static */
@@ -291,6 +295,11 @@ class PropertyGenerator extends AbstractMemberGenerator
         if (($docBlock = $this->getDocBlock()) !== null) {
             $docBlock->setIndentation('    ');
             $output .= $docBlock->generate();
+        }
+
+        if (($attributeGenerator = $this->getAttributes()) !== null) {
+            $attributeGenerator->setIndentation('    ');
+            $output .= $attributeGenerator->generate() . self::LINE_FEED;
         }
 
         if ($this->isConst()) {

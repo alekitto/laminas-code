@@ -200,7 +200,8 @@ class MethodGenerator extends AbstractMemberGenerator
         array $parameters = [],
         $flags = self::FLAG_PUBLIC,
         $body = null,
-        $docBlock = null
+        $docBlock = null,
+        ?AttributeGenerator $attributes = null
     ) {
         if ($name) {
             $this->setName($name);
@@ -216,6 +217,9 @@ class MethodGenerator extends AbstractMemberGenerator
         }
         if ($docBlock) {
             $this->setDocBlock($docBlock);
+        }
+        if ($attributes) {
+            $this->setAttributes($attributes);
         }
     }
 
@@ -351,6 +355,11 @@ class MethodGenerator extends AbstractMemberGenerator
         if (($docBlock = $this->getDocBlock()) !== null) {
             $docBlock->setIndentation($indent);
             $output .= $docBlock->generate();
+        }
+
+        if (($attributeGenerator = $this->getAttributes()) !== null) {
+            $attributeGenerator->setIndentation($indent);
+            $output .= $attributeGenerator->generate() . self::LINE_FEED;
         }
 
         $output .= $indent;

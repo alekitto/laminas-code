@@ -58,8 +58,8 @@ class ClassGeneratorTest extends TestCase
 
     public function testClassAttributesAccessors(): void
     {
-        $attributeGenerator = AttributeGenerator::fromArray([]);
-        $classGenerator    = new ClassGenerator();
+        $attributeGenerator = new AttributeGenerator();
+        $classGenerator     = new ClassGenerator();
         $classGenerator->setAttributes($attributeGenerator);
         self::assertSame($attributeGenerator, $classGenerator->getAttributes());
     }
@@ -502,16 +502,16 @@ CODE;
 
     public function testCreateFromGeneratorWithAttributes(): void
     {
-        $attributeName = 'AnyAttribute';
+        $attributeName      = 'AnyAttribute';
         $attributeArguments = ['argument' => 2];
         $attributeGenerator = AttributeGenerator::fromPrototype(new AttributePrototype($attributeName, $attributeArguments));
 
-        $classGenerator = ClassGenerator::fromArray([
-            'name' => 'AnyClassName',
-            'attribute' => $attributeGenerator,
-        ]);
+        $classGenerator = new ClassGenerator(
+            'AnyClassName',
+            attributes: $attributeGenerator,
+        );
 
-        $expectedGenerator = $attributeGenerator;
+        $expectedGenerator  = $attributeGenerator;
         $attributeGenerator = $classGenerator->getAttributes();
         self::assertInstanceOf(AttributeGenerator::class, $attributeGenerator);
         self::assertEquals($expectedGenerator, $attributeGenerator);
@@ -524,14 +524,46 @@ CODE;
             new AttributePrototype('FirstAttribute', ['firstArgument' => 'abc', 'secondArgument' => 13]),
             new AttributePrototype('SecondAttribute'),
         );
-        $classGenerator = ClassGenerator::fromArray([
-            'name' => 'AnyClassName',
-            'attribute' => $attributeGenerator,
-        ]);
+        $classGenerator     = new ClassGenerator(
+            'AnyClassName',
+            attributes: $attributeGenerator,
+        );
 
         $generatedClass = $classGenerator->generate();
 
         $expectedClassOutput = <<<CODE
+#[FirstAttribute(firstArgument: 'abc', secondArgument: 12)]
+#[FirstAttribute(firstArgument: 'abc', secondArgument: 13)]
+#[SecondAttribute]
+class AnyClassName
+{
+}
+
+CODE;
+        self::assertSame($expectedClassOutput, $generatedClass);
+    }
+
+    public function testGenerateAttributesWithDocBlock(): void
+    {
+        $attributeGenerator = AttributeGenerator::fromPrototype(
+            new AttributePrototype('FirstAttribute', ['firstArgument' => 'abc', 'secondArgument' => 12]),
+            new AttributePrototype('FirstAttribute', ['firstArgument' => 'abc', 'secondArgument' => 13]),
+            new AttributePrototype('SecondAttribute'),
+        );
+        $docblockGenerator  = new DocBlockGenerator('Test description.');
+
+        $classGenerator = new ClassGenerator(
+            'AnyClassName',
+            docBlock: $docblockGenerator,
+            attributes: $attributeGenerator,
+        );
+
+        $generatedClass = $classGenerator->generate();
+
+        $expectedClassOutput = <<<CODE
+/**
+ * Test description.
+ */
 #[FirstAttribute(firstArgument: 'abc', secondArgument: 12)]
 #[FirstAttribute(firstArgument: 'abc', secondArgument: 13)]
 #[SecondAttribute]

@@ -261,7 +261,7 @@ class ClassGenerator extends AbstractGenerator implements TraitUsageInterface
         array $properties = [],
         array $methods = [],
         DocBlockGenerator $docBlock = null,
-        AttributeGenerator $attributeGenerator = null,
+        AttributeGenerator $attributes = null,
     ) {
         $this->traitUsageGenerator = new TraitUsageGenerator($this);
 
@@ -289,8 +289,8 @@ class ClassGenerator extends AbstractGenerator implements TraitUsageInterface
         if ($docBlock !== null) {
             $this->setDocBlock($docBlock);
         }
-        if ($attributeGenerator) {
-            $this->setAttributes($attributeGenerator);
+        if ($attributes) {
+            $this->setAttributes($attributes);
         }
     }
 
@@ -1100,7 +1100,8 @@ class ClassGenerator extends AbstractGenerator implements TraitUsageInterface
             $output .= $docBlock->generate();
         }
 
-        if ($attributeGenerator = $this->getAttributes()) {
+        if (($attributeGenerator = $this->getAttributes()) !== null) {
+            $attributeGenerator->setIndentation('');
             $output .= $attributeGenerator->generate() . self::LINE_FEED;
         }
 
