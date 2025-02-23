@@ -238,6 +238,7 @@ class ClassGenerator extends AbstractGenerator implements TraitUsageInterface
     }
 
     /**
+     * @param string                               $name
      * @param string                               $namespaceName
      * @param int|int[]|null                       $flags
      * @param class-string|null                    $extends
@@ -245,16 +246,17 @@ class ClassGenerator extends AbstractGenerator implements TraitUsageInterface
      * @psalm-param array<class-string>            $interfaces
      * @param PropertyGenerator[]|string[]|array[] $properties
      * @param MethodGenerator[]|string[]|array[]   $methods
+     * @param DocBlockGenerator                    $docBlock
      */
     public function __construct(
-        ?string $name = null,
+        $name = null,
         $namespaceName = null,
         $flags = null,
         $extends = null,
         array $interfaces = [],
         array $properties = [],
         array $methods = [],
-        ?DocBlockGenerator $docBlock = null,
+        $docBlock = null,
         ?AttributeGenerator $attributes = null,
     ) {
         $this->traitUsageGenerator = new TraitUsageGenerator($this);

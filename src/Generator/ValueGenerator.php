@@ -182,7 +182,10 @@ class ValueGenerator extends AbstractGenerator implements Stringable, ValueGener
         return $this->constants;
     }
 
-    public function isValidConstantType(): bool
+    /**
+     * @return bool
+     */
+    public function isValidConstantType()
     {
         if ($this->type === self::TYPE_AUTO) {
             $type = $this->getAutoDeterminedType($this->value);
@@ -210,29 +213,37 @@ class ValueGenerator extends AbstractGenerator implements Stringable, ValueGener
     }
 
     /**
+     * @param mixed $value
      * @return ValueGenerator
      */
-    public function setValue(mixed $value): self
+    public function setValue($value)
     {
         $this->value = $value;
         return $this;
     }
 
-    public function getValue(): mixed
+    /**
+     * @return mixed
+     */
+    public function getValue()
     {
         return $this->value;
     }
 
     /**
+     * @param string $type
      * @return ValueGenerator
      */
-    public function setType(string $type): self
+    public function setType($type)
     {
-        $this->type = $type;
+        $this->type = (string) $type;
         return $this;
     }
 
-    public function getType(): string
+    /**
+     * @return string
+     */
+    public function getType()
     {
         return $this->type;
     }
@@ -241,16 +252,13 @@ class ValueGenerator extends AbstractGenerator implements Stringable, ValueGener
      * @param  int $arrayDepth
      * @return ValueGenerator
      */
-    public function setArrayDepth($arrayDepth): self
+    public function setArrayDepth($arrayDepth)
     {
         $this->arrayDepth = (int) $arrayDepth;
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getArrayDepth()
+    public function getArrayDepth(): int
     {
         return $this->arrayDepth;
     }

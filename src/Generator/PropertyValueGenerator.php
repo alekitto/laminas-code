@@ -7,6 +7,63 @@ use Laminas\Stdlib\ArrayObject as StdlibArrayObject;
 
 class PropertyValueGenerator implements ValueGeneratorInterface
 {
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_AUTO = ValueGenerator::TYPE_AUTO;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_BOOLEAN = ValueGenerator::TYPE_BOOLEAN;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_BOOL = ValueGenerator::TYPE_BOOL;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_NUMBER = ValueGenerator::TYPE_NUMBER;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_INTEGER = ValueGenerator::TYPE_INTEGER;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_INT = ValueGenerator::TYPE_INT;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_FLOAT = ValueGenerator::TYPE_FLOAT;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_DOUBLE = ValueGenerator::TYPE_DOUBLE;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_STRING = ValueGenerator::TYPE_STRING;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_ARRAY = ValueGenerator::TYPE_ARRAY;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_ARRAY_SHORT = ValueGenerator::TYPE_ARRAY_SHORT;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_ARRAY_LONG = ValueGenerator::TYPE_ARRAY_LONG;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_CONSTANT = ValueGenerator::TYPE_CONSTANT;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_NULL = ValueGenerator::TYPE_NULL;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_ENUM = ValueGenerator::TYPE_ENUM;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_OBJECT = ValueGenerator::TYPE_OBJECT;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const TYPE_OTHER = ValueGenerator::TYPE_OTHER;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const OUTPUT_MULTIPLE_LINE = ValueGenerator::OUTPUT_MULTIPLE_LINE;
+
+    /** @deprecated Use constants from {@see ValueGenerator} class */
+    public const OUTPUT_SINGLE_LINE = ValueGenerator::OUTPUT_SINGLE_LINE;
+
     private ValueGeneratorInterface $innerGenerator;
 
     /**
@@ -33,34 +90,55 @@ class PropertyValueGenerator implements ValueGeneratorInterface
         return $gen;
     }
 
-    public function setArrayDepth(int $arrayDepth): self
+    /**
+     * @param int $arrayDepth
+     * @return self
+     */
+    public function setArrayDepth($arrayDepth)
     {
         $this->innerGenerator->setArrayDepth($arrayDepth);
         return $this;
     }
 
-    public function isValidConstantType(): bool
+    /**
+     * @return bool
+     */
+    public function isValidConstantType()
     {
         return $this->innerGenerator->isValidConstantType();
     }
 
-    public function getType(): string
+    /**
+     * @return string
+     */
+    public function getType()
     {
         return $this->innerGenerator->getType();
     }
 
-    public function setType(string $type): self
+    /**
+     * @param string $type
+     * @return self
+     */
+    public function setType($type)
     {
         $this->innerGenerator->setType($type);
         return $this;
     }
 
-    public function getValue(): mixed
+    /**
+     * @return mixed
+     */
+    public function getValue()
     {
         return $this->innerGenerator->getValue();
     }
 
-    public function setValue(mixed $value): self
+    /**
+     * @param mixed $value
+     * @return self
+     */
+    public function setValue($value)
     {
         $this->innerGenerator->setValue($value);
         return $this;

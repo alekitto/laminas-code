@@ -131,6 +131,11 @@
       <code><![CDATA[new static($classReflection->getName())]]></code>
     </UnsafeInstantiation>
   </file>
+  <file src="src/Generator/ConstructorCallValueGenerator.php">
+    <UnusedClass>
+      <code>ConstructorCallValueGenerator</code>
+    </UnusedClass>
+  </file>
   <file src="src/Generator/DocBlock/Tag.php">
     <LessSpecificReturnStatement>
       <code><![CDATA[$tagManager->createTagFromReflection($reflectionTag)]]></code>
@@ -330,6 +335,14 @@
     <UnsafeInstantiation>
       <code>new static()</code>
     </UnsafeInstantiation>
+  </file>
+  <file src="src/Generator/FunctionCallValueGenerator.php">
+    <PossiblyUnusedMethod>
+      <code>__construct</code>
+    </PossiblyUnusedMethod>
+    <RedundantCastGivenDocblockType>
+      <code>(string) $type</code>
+    </RedundantCastGivenDocblockType>
   </file>
   <file src="src/Generator/InterfaceGenerator.php">
     <DeprecatedMethod>
@@ -631,6 +644,7 @@
     <RedundantCastGivenDocblockType>
       <code>(int) $arrayDepth</code>
       <code>(string) $outputMode</code>
+      <code>(string) $type</code>
     </RedundantCastGivenDocblockType>
     <UnevaluatedCode>
       <code><![CDATA['float']]></code>

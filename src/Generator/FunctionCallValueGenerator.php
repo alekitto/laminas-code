@@ -22,7 +22,10 @@ class FunctionCallValueGenerator extends AbstractGenerator implements ValueGener
         }
     }
 
-    public function setArrayDepth(int $arrayDepth): self
+    /**
+     * @param int $arrayDepth
+     */
+    public function setArrayDepth($arrayDepth): self
     {
         $this->arrayDepth = $arrayDepth;
         return $this;
@@ -38,9 +41,12 @@ class FunctionCallValueGenerator extends AbstractGenerator implements ValueGener
         return $this->type;
     }
 
-    public function setType(string $type): self
+    /**
+     * @param string $type
+     */
+    public function setType($type): self
     {
-        $this->type = $type;
+        $this->type = (string) $type;
         return $this;
     }
 

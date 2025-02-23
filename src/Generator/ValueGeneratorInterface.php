@@ -6,15 +6,36 @@ namespace Laminas\Code\Generator;
 
 interface ValueGeneratorInterface extends GeneratorInterface
 {
-    public function setArrayDepth(int $arrayDepth): self;
+    /**
+     * @param int $arrayDepth
+     * @return self
+     */
+    public function setArrayDepth($arrayDepth);
 
-    public function isValidConstantType(): bool;
+    /**
+     * @return bool
+     */
+    public function isValidConstantType();
 
-    public function getType(): string;
+    /**
+     * @return string
+     */
+    public function getType();
 
-    public function setType(string $type): self;
+    /**
+     * @param string $type
+     * @return self
+     */
+    public function setType($type);
 
-    public function getValue(): mixed;
+    /**
+     * @return mixed
+     */
+    public function getValue();
 
-    public function setValue(mixed $value): self;
+    /**
+     * @param mixed $value
+     * @return self
+     */
+    public function setValue($value);
 }

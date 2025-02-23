@@ -31,7 +31,11 @@ final class AttributeGeneratorByPrototypeTest extends TestCase
 
         $result = $generator->generate();
 
-        $expectedResult = "#[LaminasTest\Code\Generator\Fixture\AttributeGenerator\SimpleAttribute]\n#[LaminasTest\Code\Generator\Fixture\AttributeGenerator\SimpleAttribute]";
+        $expectedResult = <<<EOF
+        #[LaminasTest\Code\Generator\Fixture\AttributeGenerator\SimpleAttribute]
+        #[LaminasTest\Code\Generator\Fixture\AttributeGenerator\SimpleAttribute]
+        EOF;
+
         $this->assertSame($expectedResult, $result);
     }
 
@@ -49,7 +53,7 @@ final class AttributeGeneratorByPrototypeTest extends TestCase
 
         $result = $generator->generate();
 
-        $expectedResult = "#[LaminasTest\Code\Generator\Fixture\AttributeGenerator\AttributeWithArguments(boolArgument: false, stringArgument: 'char chain', intArgument: 16)]";
+        $expectedResult = "#[LaminasTest\Code\Generator\Fixture\AttributeGenerator\AttributeWithArguments(boolArgument: false, stringArgument: 'char chain', intArgument: 16)]"; // phpcs:ignore Generic.Files.LineLength.TooLong
         $this->assertSame($expectedResult, $result);
     }
 
@@ -68,7 +72,13 @@ final class AttributeGeneratorByPrototypeTest extends TestCase
 
         $result = $generator->generate();
 
-        $expectedResult = "#[LaminasTest\Code\Generator\Fixture\AttributeGenerator\AttributeWithArguments(boolArgument: false, stringArgument: 'char chain', intArgument: 16)]\n#[LaminasTest\Code\Generator\Fixture\AttributeGenerator\AttributeWithArguments]";
+        // phpcs:disable Generic.Files.LineLength.TooLong
+        $expectedResult = <<<EOF
+        #[LaminasTest\Code\Generator\Fixture\AttributeGenerator\AttributeWithArguments(boolArgument: false, stringArgument: 'char chain', intArgument: 16)]
+        #[LaminasTest\Code\Generator\Fixture\AttributeGenerator\AttributeWithArguments]
+        EOF;
+        // phpcs:enable Generic.Files.LineLength.TooLong
+
         $this->assertSame($expectedResult, $result);
     }
 
@@ -87,7 +97,13 @@ final class AttributeGeneratorByPrototypeTest extends TestCase
 
         $result = $generator->generate();
 
-        $expectedResult = "#[LaminasTest\Code\Generator\Fixture\AttributeGenerator\AttributeWithArguments(stringArgument: 'any string', intArgument: 1, boolArgument: true)]\n#[LaminasTest\Code\Generator\Fixture\AttributeGenerator\SimpleAttribute]";
+        // phpcs:disable Generic.Files.LineLength.TooLong
+        $expectedResult = <<<EOF
+        #[LaminasTest\Code\Generator\Fixture\AttributeGenerator\AttributeWithArguments(stringArgument: 'any string', intArgument: 1, boolArgument: true)]
+        #[LaminasTest\Code\Generator\Fixture\AttributeGenerator\SimpleAttribute]
+        EOF;
+        // phpcs:enable Generic.Files.LineLength.TooLong
+
         $this->assertSame($expectedResult, $result);
     }
 
