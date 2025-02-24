@@ -2,7 +2,7 @@
 
 namespace Laminas\Code\Generator;
 
-class ConstructorCallValueGenerator extends FunctionCallValueGenerator
+final class ConstructorCallValueGenerator extends FunctionCallValueGenerator
 {
     public function __construct(string $name, array $parameters = [])
     {
