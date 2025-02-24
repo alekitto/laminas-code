@@ -11,6 +11,7 @@ use Laminas\Code\Exception\RuntimeException;
 use Laminas\Code\Generator\PropertyGenerator;
 use Laminas\Code\Generator\PropertyValueGenerator;
 use Laminas\Code\Generator\ValueGenerator;
+use Laminas\Code\Generator\ValueGeneratorInterface;
 use Laminas\Stdlib\ArrayObject as StdlibArrayObject;
 use LaminasTest\Code\Generator\TestAsset\TestEnum;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -84,7 +85,12 @@ class ValueGeneratorTest extends TestCase
         $this->expectExceptionMessage('$constants must be an instance of ArrayObject or Laminas\Stdlib\ArrayObject');
 
         $constants = $this->createMock(ArrayAccess::class);
-        new ValueGenerator(null, ValueGenerator::TYPE_AUTO, ValueGenerator::OUTPUT_MULTIPLE_LINE, $constants);
+        new ValueGenerator(
+            null,
+            ValueGeneratorInterface::TYPE_AUTO,
+            ValueGeneratorInterface::OUTPUT_MULTIPLE_LINE,
+            $constants,
+        );
     }
 
     #[DataProvider('constantsType')]
@@ -92,8 +98,8 @@ class ValueGeneratorTest extends TestCase
     {
         $valueGenerator = new ValueGenerator(
             null,
-            ValueGenerator::TYPE_AUTO,
-            ValueGenerator::OUTPUT_MULTIPLE_LINE,
+            ValueGeneratorInterface::TYPE_AUTO,
+            ValueGeneratorInterface::OUTPUT_MULTIPLE_LINE,
             $constants
         );
 
@@ -131,35 +137,39 @@ class ValueGeneratorTest extends TestCase
     {
         return [
             [
-                new ValueGenerator([], ValueGenerator::TYPE_ARRAY, ValueGenerator::OUTPUT_SINGLE_LINE),
+                new ValueGenerator(
+                    [],
+                    ValueGeneratorInterface::TYPE_ARRAY,
+                    ValueGeneratorInterface::OUTPUT_SINGLE_LINE
+                ),
                 '    public const FOO = [];',
             ],
             [
                 new ValueGenerator(
                     [],
-                    ValueGenerator::TYPE_ARRAY_LONG,
-                    ValueGenerator::OUTPUT_SINGLE_LINE
+                    ValueGeneratorInterface::TYPE_ARRAY_LONG,
+                    ValueGeneratorInterface::OUTPUT_SINGLE_LINE
                 ),
                 '    public const FOO = array();',
             ],
             [
                 new ValueGenerator(
                     [],
-                    ValueGenerator::TYPE_ARRAY_SHORT,
-                    ValueGenerator::OUTPUT_SINGLE_LINE
+                    ValueGeneratorInterface::TYPE_ARRAY_SHORT,
+                    ValueGeneratorInterface::OUTPUT_SINGLE_LINE
                 ),
                 '    public const FOO = [];',
             ],
-            [new ValueGenerator(true, ValueGenerator::TYPE_BOOL), '    public const FOO = true;'],
-            [new ValueGenerator(true, ValueGenerator::TYPE_BOOLEAN), '    public const FOO = true;'],
-            [new ValueGenerator(1, ValueGenerator::TYPE_INT), '    public const FOO = 1;'],
-            [new ValueGenerator(1, ValueGenerator::TYPE_INTEGER), '    public const FOO = 1;'],
-            [new ValueGenerator(0.1, ValueGenerator::TYPE_DOUBLE), '    public const FOO = 0.1;'],
-            [new ValueGenerator(0.1, ValueGenerator::TYPE_FLOAT), '    public const FOO = 0.1;'],
-            [new ValueGenerator('bar', ValueGenerator::TYPE_STRING), "    public const FOO = 'bar';"],
-            [new ValueGenerator(null, ValueGenerator::TYPE_NULL), '    public const FOO = null;'],
+            [new ValueGenerator(true, ValueGeneratorInterface::TYPE_BOOL), '    public const FOO = true;'],
+            [new ValueGenerator(true, ValueGeneratorInterface::TYPE_BOOLEAN), '    public const FOO = true;'],
+            [new ValueGenerator(1, ValueGeneratorInterface::TYPE_INT), '    public const FOO = 1;'],
+            [new ValueGenerator(1, ValueGeneratorInterface::TYPE_INTEGER), '    public const FOO = 1;'],
+            [new ValueGenerator(0.1, ValueGeneratorInterface::TYPE_DOUBLE), '    public const FOO = 0.1;'],
+            [new ValueGenerator(0.1, ValueGeneratorInterface::TYPE_FLOAT), '    public const FOO = 0.1;'],
+            [new ValueGenerator('bar', ValueGeneratorInterface::TYPE_STRING), "    public const FOO = 'bar';"],
+            [new ValueGenerator(null, ValueGeneratorInterface::TYPE_NULL), '    public const FOO = null;'],
             [
-                new ValueGenerator('PHP_EOL', ValueGenerator::TYPE_CONSTANT),
+                new ValueGenerator('PHP_EOL', ValueGeneratorInterface::TYPE_CONSTANT),
                 '    public const FOO = PHP_EOL;',
             ],
         ];
@@ -179,22 +189,22 @@ class ValueGeneratorTest extends TestCase
 
         return [
             'auto'        => [
-                ValueGenerator::TYPE_AUTO,
+                ValueGeneratorInterface::TYPE_AUTO,
                 $value,
                 $shortOutput,
             ],
             'array'       => [
-                ValueGenerator::TYPE_ARRAY,
+                ValueGeneratorInterface::TYPE_ARRAY,
                 $value,
                 $shortOutput,
             ],
             'array long'  => [
-                ValueGenerator::TYPE_ARRAY_LONG,
+                ValueGeneratorInterface::TYPE_ARRAY_LONG,
                 $value,
                 $longOutput,
             ],
             'array short' => [
-                ValueGenerator::TYPE_ARRAY_SHORT,
+                ValueGeneratorInterface::TYPE_ARRAY_SHORT,
                 $value,
                 $shortOutput,
             ],
@@ -413,14 +423,14 @@ EOS;
     {
         $valueGenerator1 = new ValueGenerator(
             'FALSE',
-            ValueGenerator::TYPE_AUTO,
-            ValueGenerator::OUTPUT_MULTIPLE_LINE
+            ValueGeneratorInterface::TYPE_AUTO,
+            ValueGeneratorInterface::OUTPUT_MULTIPLE_LINE
         );
 
         $valueGenerator2 = new ValueGenerator(
             'FALSE',
-            ValueGenerator::TYPE_STRING,
-            ValueGenerator::OUTPUT_MULTIPLE_LINE
+            ValueGeneratorInterface::TYPE_STRING,
+            ValueGeneratorInterface::OUTPUT_MULTIPLE_LINE
         );
 
         $valueGenerator1->initEnvironmentConstants();
@@ -433,8 +443,8 @@ EOS;
     {
         $valueGenerator1 = new ValueGenerator(
             TestEnum::Test1,
-            ValueGenerator::TYPE_AUTO,
-            ValueGenerator::OUTPUT_MULTIPLE_LINE
+            ValueGeneratorInterface::TYPE_AUTO,
+            ValueGeneratorInterface::OUTPUT_MULTIPLE_LINE
         );
 
         $valueGenerator2 = new ValueGenerator(TestEnum::Test2);
@@ -544,7 +554,7 @@ EOS;
     }
 
     /**
-     * @param ValueGenerator::OUTPUT_* $outputMode
+     * @param ValueGeneratorInterface::OUTPUT_* $outputMode
      */
     #[DataProvider('multipleOutputArray')]
     public function testArrayWithOutputMode(
@@ -581,14 +591,14 @@ EOS;
         return [
             'singleLine'   => [
                 $array,
-                ValueGenerator::TYPE_ARRAY_SHORT,
-                ValueGenerator::OUTPUT_SINGLE_LINE,
+                ValueGeneratorInterface::TYPE_ARRAY_SHORT,
+                ValueGeneratorInterface::OUTPUT_SINGLE_LINE,
                 $singleLine,
             ],
             'multipleLine' => [
                 $array,
-                ValueGenerator::TYPE_ARRAY_SHORT,
-                ValueGenerator::OUTPUT_MULTIPLE_LINE,
+                ValueGeneratorInterface::TYPE_ARRAY_SHORT,
+                ValueGeneratorInterface::OUTPUT_MULTIPLE_LINE,
                 $multipleLine,
             ],
         ];

@@ -254,15 +254,15 @@ class PropertyGenerator extends AbstractMemberGenerator
     }
 
     /**
-     * @param  ValueGeneratorInterface|mixed $defaultValue
-     * @param  ValueGenerator::TYPE_*        $defaultValueType
-     * @param  ValueGenerator::OUTPUT_*      $defaultValueOutputMode
+     * @param  ValueGeneratorInterface|mixed     $defaultValue
+     * @param  ValueGeneratorInterface::TYPE_*   $defaultValueType
+     * @param  ValueGeneratorInterface::OUTPUT_* $defaultValueOutputMode
      * @return static
      */
     public function setDefaultValue(
         $defaultValue,
-        $defaultValueType = ValueGenerator::TYPE_AUTO,
-        $defaultValueOutputMode = ValueGenerator::OUTPUT_MULTIPLE_LINE
+        $defaultValueType = ValueGeneratorInterface::TYPE_AUTO,
+        $defaultValueOutputMode = ValueGeneratorInterface::OUTPUT_MULTIPLE_LINE
     ) {
         if (! $defaultValue instanceof ValueGeneratorInterface) {
             $defaultValue = new ValueGenerator($defaultValue, $defaultValueType, $defaultValueOutputMode);

@@ -7,6 +7,7 @@ use Laminas\Code\Generator\AttributeGenerator;
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use Laminas\Code\Generator\ParameterGenerator;
 use Laminas\Code\Generator\ValueGenerator;
+use Laminas\Code\Generator\ValueGeneratorInterface;
 use Laminas\Code\Reflection\ClassReflection;
 use Laminas\Code\Reflection\MethodReflection;
 use Laminas\Code\Reflection\ParameterReflection;
@@ -60,7 +61,7 @@ class ParameterGeneratorTest extends TestCase
     {
         $parameterGenerator = new ParameterGenerator();
 
-        $value = new ValueGenerator('Foo', ValueGenerator::TYPE_CONSTANT);
+        $value = new ValueGenerator('Foo', ValueGeneratorInterface::TYPE_CONSTANT);
         $parameterGenerator->setDefaultValue($value);
         self::assertSame('Foo', (string) $parameterGenerator->getDefaultValue());
     }
@@ -681,7 +682,7 @@ class ParameterGeneratorTest extends TestCase
 
         $parameterGenerator = new ParameterGenerator(
             'testParam',
-            ValueGenerator::TYPE_STRING,
+            ValueGeneratorInterface::TYPE_STRING,
             'defValue',
             attributes: $attributeGenerator,
         );
