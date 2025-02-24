@@ -24,6 +24,8 @@ class ParameterGenerator extends AbstractGenerator
 
     private bool $omitDefaultValue = false;
 
+    protected ?AttributeGenerator $attributes = null;
+
     /**
      * @return ParameterGenerator
      */
@@ -128,7 +130,8 @@ class ParameterGenerator extends AbstractGenerator
         $type = null,
         $defaultValue = null,
         $position = null,
-        $passByReference = false
+        $passByReference = false,
+        ?AttributeGenerator $attributes = null,
     ) {
         if (null !== $name) {
             $this->setName($name);
@@ -144,6 +147,9 @@ class ParameterGenerator extends AbstractGenerator
         }
         if (false !== $passByReference) {
             $this->setPassedByReference(true);
+        }
+        if ($attributes) {
+            $this->setAttributes($attributes);
         }
     }
 
@@ -272,12 +278,30 @@ class ParameterGenerator extends AbstractGenerator
         return $this->variadic;
     }
 
+    public function setAttributes(AttributeGenerator $attributes): self
+    {
+        $this->attributes = $attributes;
+
+        return $this;
+    }
+
+    public function getAttributes(): ?AttributeGenerator
+    {
+        return $this->attributes;
+    }
+
     /**
      * @return string
      */
     public function generate()
     {
-        $output = $this->generateTypeHint();
+        $output = '';
+        if (($attributeGenerator = $this->getAttributes()) !== null) {
+            $attributeGenerator->setIndentation('');
+            $output .= $attributeGenerator->generate() . self::LINE_FEED;
+        }
+
+        $output .= $this->generateTypeHint();
 
         if (true === $this->passedByReference) {
             $output .= '&';

@@ -3,6 +3,7 @@
 namespace LaminasTest\Code\Generator;
 
 use Closure;
+use Laminas\Code\Generator\AttributeGenerator;
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use Laminas\Code\Generator\ParameterGenerator;
 use Laminas\Code\Generator\ValueGenerator;
@@ -669,5 +670,28 @@ class ParameterGeneratorTest extends TestCase
         $parameter->omitDefaultValue();
 
         self::assertSame('string $foo', $parameter->generate());
+    }
+
+    public function testGenerateAttributes(): void
+    {
+        $attributeGenerator = AttributeGenerator::fromPrototype(
+            new AttributeGenerator\AttributePrototype('FirstAttribute', ['firstArgument' => 'abc', 'secondArgument' => 12]), // phpcs:ignore Generic.Files.LineLength.TooLong
+            new AttributeGenerator\AttributePrototype('SensitiveParameter'),
+        );
+
+        $parameterGenerator = new ParameterGenerator(
+            'testParam',
+            ValueGenerator::TYPE_STRING,
+            'defValue',
+            attributes: $attributeGenerator,
+        );
+
+        $generated      = $parameterGenerator->generate();
+        $expectedOutput = <<<'CODE'
+#[FirstAttribute(firstArgument: 'abc', secondArgument: 12)]
+#[SensitiveParameter]
+string $testParam = 'defValue'
+CODE;
+        self::assertSame($expectedOutput, $generated);
     }
 }
