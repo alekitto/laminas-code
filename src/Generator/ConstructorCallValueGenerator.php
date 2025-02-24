@@ -4,6 +4,12 @@ namespace Laminas\Code\Generator;
 
 class ConstructorCallValueGenerator extends FunctionCallValueGenerator
 {
+    public function __construct(string $name, array $parameters = [])
+    {
+        parent::__construct($name, $parameters);
+        $this->setIndentation('');
+    }
+
     public function generate(): string
     {
         return 'new ' . parent::generate();

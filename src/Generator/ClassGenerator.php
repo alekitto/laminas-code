@@ -131,7 +131,7 @@ class ClassGenerator extends AbstractGenerator implements TraitUsageInterface
         foreach ($classReflection->getReflectionConstants() as $constReflection) {
             $constants[] = new PropertyGenerator(
                 $constReflection->getName(),
-                new PropertyValueGenerator($constReflection->getValue()),
+                new ValueGenerator($constReflection->getValue()),
                 $constReflection->isFinal()
                     ? [PropertyGenerator::FLAG_CONSTANT, PropertyGenerator::FLAG_FINAL]
                     : [PropertyGenerator::FLAG_CONSTANT]
@@ -638,7 +638,7 @@ class ClassGenerator extends AbstractGenerator implements TraitUsageInterface
         return $this->addConstantFromGenerator(
             new PropertyGenerator(
                 $name,
-                new PropertyValueGenerator($value),
+                new ValueGenerator($value),
                 $isFinal
                     ? PropertyGenerator::FLAG_CONSTANT | PropertyGenerator::FLAG_FINAL
                     : PropertyGenerator::FLAG_CONSTANT

@@ -131,11 +131,6 @@
       <code><![CDATA[new static($classReflection->getName())]]></code>
     </UnsafeInstantiation>
   </file>
-  <file src="src/Generator/ConstructorCallValueGenerator.php">
-    <UnusedClass>
-      <code>ConstructorCallValueGenerator</code>
-    </UnusedClass>
-  </file>
   <file src="src/Generator/DocBlock/Tag.php">
     <LessSpecificReturnStatement>
       <code><![CDATA[$tagManager->createTagFromReflection($reflectionTag)]]></code>
@@ -337,9 +332,6 @@
     </UnsafeInstantiation>
   </file>
   <file src="src/Generator/FunctionCallValueGenerator.php">
-    <PossiblyUnusedMethod>
-      <code>__construct</code>
-    </PossiblyUnusedMethod>
     <RedundantCastGivenDocblockType>
       <code>(string) $type</code>
     </RedundantCastGivenDocblockType>
@@ -483,11 +475,6 @@
       <code><![CDATA[new static($array['name'])]]></code>
       <code>new static()</code>
     </UnsafeInstantiation>
-  </file>
-  <file src="src/Generator/PropertyValueGenerator.php">
-    <PossiblyUnusedMethod>
-      <code>fromValueGenerator</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Generator/TraitGenerator.php">
     <DeprecatedMethod>
@@ -1747,24 +1734,6 @@
     <InvalidArgument>
       <code>new stdClass()</code>
     </InvalidArgument>
-    <InvalidReturnStatement>
-      <code><![CDATA[[
-            ['string', 'foo', "'foo';"],
-            ['int', 1, '1;'],
-            ['integer', 1, '1;'],
-            ['bool', true, 'true;'],
-            ['bool', false, 'false;'],
-            ['boolean', true, 'true;'],
-            ['number', 1, '1;'],
-            ['float', 1.23, '1.23;'],
-            ['double', 1.23, '1.23;'],
-            ['constant', 'FOO', 'FOO;'],
-            ['null', null, 'null;'],
-        ]]]></code>
-    </InvalidReturnStatement>
-    <InvalidReturnType>
-      <code>bool[][]|string[][]|int[][]|null[][]</code>
-    </InvalidReturnType>
     <MissingReturnType>
       <code>testOmitType</code>
     </MissingReturnType>
@@ -1772,7 +1741,7 @@
       <code>$generator</code>
     </MixedAssignment>
     <PossiblyUnusedMethod>
-      <code>dataSetTypeSetValueGenerate</code>
+      <code>dataSetDefaultValueGenerate</code>
       <code>visibility</code>
     </PossiblyUnusedMethod>
     <RedundantConditionGivenDocblockType>
@@ -1783,6 +1752,9 @@
     </UnusedMethodCall>
   </file>
   <file src="test/Generator/PropertyValueGeneratorTest.php">
+    <DeprecatedClass>
+      <code>new PropertyValueGenerator('foo')</code>
+    </DeprecatedClass>
     <MissingReturnType>
       <code>testPropertyValueAddsSemicolonToValueGenerator</code>
     </MissingReturnType>
@@ -1890,6 +1862,7 @@
       <code>complexArray</code>
       <code>complexArrayWCustomIndent</code>
       <code>constantsType</code>
+      <code>dataSetTypeSetValueGenerate</code>
       <code>getEscapedParameters</code>
       <code>invalidValue</code>
       <code>multipleOutputArray</code>

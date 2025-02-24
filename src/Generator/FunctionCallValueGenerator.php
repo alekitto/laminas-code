@@ -10,7 +10,7 @@ class FunctionCallValueGenerator extends AbstractGenerator implements ValueGener
     private int $arrayDepth = 1;
     private string $type    = ValueGenerator::TYPE_OTHER;
 
-    public function __construct(private readonly string $name, private readonly array $parameters = [])
+    public function __construct(private readonly string $name, private array $parameters = [])
     {
         /** @var mixed $value */
         foreach ($this->parameters as &$value) {

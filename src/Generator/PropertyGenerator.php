@@ -18,12 +18,12 @@ class PropertyGenerator extends AbstractMemberGenerator
 
     protected bool $isConst = false;
 
-    protected ?PropertyValueGenerator $defaultValue = null;
+    protected ?ValueGeneratorInterface $defaultValue = null;
 
     private bool $omitDefaultValue = false;
 
     /**
-     * @param  PropertyValueGenerator|string|array|null  $defaultValue
+     * @param  ValueGeneratorInterface|string|array|null $defaultValue
      * @param  int|int[]                                 $flags
      */
     public function __construct(
@@ -246,7 +246,7 @@ class PropertyGenerator extends AbstractMemberGenerator
     }
 
     /**
-     * @return ?PropertyValueGenerator
+     * @return ?ValueGeneratorInterface
      */
     public function getDefaultValue()
     {
@@ -254,9 +254,9 @@ class PropertyGenerator extends AbstractMemberGenerator
     }
 
     /**
-     * @param  PropertyValueGenerator|mixed     $defaultValue
-     * @param  ValueGenerator::TYPE_*   $defaultValueType
-     * @param  ValueGenerator::OUTPUT_* $defaultValueOutputMode
+     * @param  ValueGeneratorInterface|mixed $defaultValue
+     * @param  ValueGenerator::TYPE_*        $defaultValueType
+     * @param  ValueGenerator::OUTPUT_*      $defaultValueOutputMode
      * @return static
      */
     public function setDefaultValue(
@@ -264,8 +264,9 @@ class PropertyGenerator extends AbstractMemberGenerator
         $defaultValueType = ValueGenerator::TYPE_AUTO,
         $defaultValueOutputMode = ValueGenerator::OUTPUT_MULTIPLE_LINE
     ) {
-        if (! $defaultValue instanceof PropertyValueGenerator) {
-            $defaultValue = new PropertyValueGenerator($defaultValue, $defaultValueType, $defaultValueOutputMode);
+        if (! $defaultValue instanceof ValueGeneratorInterface) {
+            $defaultValue = new ValueGenerator($defaultValue, $defaultValueType, $defaultValueOutputMode);
+            $defaultValue->setArrayDepth(1);
         }
 
         $this->defaultValue = $defaultValue;
@@ -295,6 +296,15 @@ class PropertyGenerator extends AbstractMemberGenerator
             $output .= $attributeGenerator->generate() . self::LINE_FEED;
         }
 
+        if ($defaultValue !== null) {
+            $default = $defaultValue->generate();
+            if (! $defaultValue instanceof PropertyValueGenerator) {
+                $default .= ';';
+            }
+        } else {
+            $default = 'null;';
+        }
+
         if ($this->isConst()) {
             if ($defaultValue !== null && ! $defaultValue->isValidConstantType()) {
                 throw new Exception\RuntimeException(sprintf(
@@ -310,7 +320,7 @@ class PropertyGenerator extends AbstractMemberGenerator
                    . $this->getVisibility()
                    . ' const '
                    . $name . ' = '
-                   . ($defaultValue !== null ? $defaultValue->generate() : 'null;');
+                   . $default;
         }
 
         $type    = $this->type;
@@ -325,7 +335,7 @@ class PropertyGenerator extends AbstractMemberGenerator
             return $output . ';';
         }
 
-        return $output . ' = ' . ($defaultValue !== null ? $defaultValue->generate() : 'null;');
+        return $output . ' = ' . $default;
     }
 
     /**

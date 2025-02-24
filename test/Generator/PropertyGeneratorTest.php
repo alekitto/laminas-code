@@ -5,15 +5,14 @@ namespace LaminasTest\Code\Generator;
 use Generator;
 use Laminas\Code\Generator\AttributeGenerator;
 use Laminas\Code\Generator\AttributeGenerator\AttributePrototype;
+use Laminas\Code\Generator\ConstructorCallValueGenerator;
 use Laminas\Code\Generator\DocBlock\Tag\VarTag;
 use Laminas\Code\Generator\DocBlockGenerator;
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use Laminas\Code\Generator\Exception\RuntimeException;
 use Laminas\Code\Generator\PropertyGenerator;
-use Laminas\Code\Generator\PropertyValueGenerator;
 use Laminas\Code\Generator\TypeGenerator;
 use Laminas\Code\Generator\ValueGenerator;
-use Laminas\Code\Generator\ValueGeneratorInterface;
 use Laminas\Code\Reflection\ClassReflection;
 use Laminas\Code\Reflection\PropertyReflection;
 use LaminasTest\Code\Generator\TestAsset\ClassWithTypedProperty;
@@ -36,51 +35,6 @@ class PropertyGeneratorTest extends TestCase
     {
         $codeGenProperty = new PropertyGenerator();
         self::assertInstanceOf(PropertyGenerator::class, $codeGenProperty);
-    }
-
-    /**
-     * @return bool[][]|string[][]|int[][]|null[][]
-     */
-    public static function dataSetTypeSetValueGenerate(): array
-    {
-        return [
-            ['string', 'foo', "'foo';"],
-            ['int', 1, '1;'],
-            ['integer', 1, '1;'],
-            ['bool', true, 'true;'],
-            ['bool', false, 'false;'],
-            ['boolean', true, 'true;'],
-            ['number', 1, '1;'],
-            ['float', 1.23, '1.23;'],
-            ['double', 1.23, '1.23;'],
-            ['constant', 'FOO', 'FOO;'],
-            ['null', null, 'null;'],
-        ];
-    }
-
-    #[DataProvider('dataSetTypeSetValueGenerate')]
-    public function testSetTypeSetValueGenerate(string $type, mixed $value, string $code): void
-    {
-        $defaultValue = new PropertyValueGenerator();
-        $defaultValue->setType($type);
-        $defaultValue->setValue($value);
-
-        self::assertSame($type, $defaultValue->getType());
-        self::assertSame($code, $defaultValue->generate());
-    }
-
-    #[DataProvider('dataSetTypeSetValueGenerate')]
-    public function testSetBogusTypeSetValueGenerateUseAutoDetection(string $type, mixed $value, string $code): void
-    {
-        if ('constant' === $type) {
-            self::markTestSkipped('constant can only be detected explicitly');
-        }
-
-        $defaultValue = new PropertyValueGenerator();
-        $defaultValue->setType('bogus');
-        $defaultValue->setValue($value);
-
-        self::assertSame($code, $defaultValue->generate());
     }
 
     public function testPropertyReturnsSimpleValue(): void
@@ -288,7 +242,7 @@ EOS;
         self::assertSame('SampleProperty', $propertyGenerator->getName());
         self::assertFalse($propertyGenerator->isConst());
         self::assertFalse($propertyGenerator->isReadonly());
-        self::assertInstanceOf(ValueGeneratorInterface::class, $propertyGenerator->getDefaultValue());
+        self::assertInstanceOf(ValueGenerator::class, $propertyGenerator->getDefaultValue());
         self::assertInstanceOf(DocBlockGenerator::class, $propertyGenerator->getDocBlock());
         self::assertTrue($propertyGenerator->isAbstract());
         self::assertTrue($propertyGenerator->isFinal());
@@ -340,16 +294,36 @@ EOS;
         self::assertSame('var', $tag->getName());
     }
 
-    #[DataProvider('dataSetTypeSetValueGenerate')]
-    public function testSetDefaultValue(string $type, mixed $value): void
+    /**
+     * @return array<mixed[]>
+     */
+    public static function dataSetDefaultValueGenerate(): array
     {
-        $property = new PropertyGenerator();
+        return [
+            ['string', 'foo', "'foo'"],
+            ['int', 1, '1'],
+            ['integer', 1, '1'],
+            ['bool', true, 'true'],
+            ['bool', false, 'false'],
+            ['boolean', true, 'true'],
+            ['number', 1, '1'],
+            ['float', 1.23, '1.23'],
+            ['double', 1.23, '1.23'],
+            ['constant', 'FOO', 'FOO'],
+            ['null', null, 'null'],
+            ['constant', new ConstructorCallValueGenerator('MyClass'), 'new MyClass()'],
+        ];
+    }
+
+    #[DataProvider('dataSetDefaultValueGenerate')]
+    public function testSetDefaultValue(string $type, mixed $value, string $output): void
+    {
+        $property = new PropertyGenerator('t');
         $property->setDefaultValue($value, $type);
 
         $valueGenerator = $property->getDefaultValue();
         self::assertNotNull($valueGenerator);
-        self::assertSame($type, $valueGenerator->getType());
-        self::assertSame($value, $valueGenerator->getValue());
+        self::assertSame('    public $t = ' . $output . ';', $property->generate());
     }
 
     public function testOmitType()

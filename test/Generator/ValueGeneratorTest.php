@@ -33,6 +33,51 @@ class ValueGeneratorTest extends TestCase
         self::assertInstanceOf(SplArrayObject::class, $valueGenerator->getConstants());
     }
 
+    /**
+     * @return array<mixed[]>
+     */
+    public static function dataSetTypeSetValueGenerate(): array
+    {
+        return [
+            ['string', 'foo', "'foo'"],
+            ['int', 1, '1'],
+            ['integer', 1, '1'],
+            ['bool', true, 'true'],
+            ['bool', false, 'false'],
+            ['boolean', true, 'true'],
+            ['number', 1, '1'],
+            ['float', 1.23, '1.23'],
+            ['double', 1.23, '1.23'],
+            ['constant', 'FOO', 'FOO'],
+            ['null', null, 'null'],
+        ];
+    }
+
+    #[DataProvider('dataSetTypeSetValueGenerate')]
+    public function testSetTypeSetValueGenerate(string $type, mixed $value, string $code): void
+    {
+        $defaultValue = new ValueGenerator();
+        $defaultValue->setType($type);
+        $defaultValue->setValue($value);
+
+        self::assertSame($type, $defaultValue->getType());
+        self::assertSame($code, $defaultValue->generate());
+    }
+
+    #[DataProvider('dataSetTypeSetValueGenerate')]
+    public function testSetBogusTypeSetValueGenerateUseAutoDetection(string $type, mixed $value, string $code): void
+    {
+        if ('constant' === $type) {
+            self::markTestSkipped('constant can only be detected explicitly');
+        }
+
+        $defaultValue = new ValueGenerator();
+        $defaultValue->setType('bogus');
+        $defaultValue->setValue($value);
+
+        self::assertSame($code, $defaultValue->generate());
+    }
+
     public function testInvalidConstantsType(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -72,7 +117,7 @@ class ValueGeneratorTest extends TestCase
      */
     #[DataProvider('validConstantTypes')]
     #[Group('#94')]
-    public function testValidConstantTypes(PropertyValueGenerator $generator, $expectedOutput): void
+    public function testValidConstantTypes(ValueGenerator $generator, $expectedOutput): void
     {
         $propertyGenerator = new PropertyGenerator('FOO', $generator);
         $propertyGenerator->setConst(true);
@@ -80,17 +125,17 @@ class ValueGeneratorTest extends TestCase
     }
 
     /**
-     * @psalm-return non-empty-list<array{PropertyValueGenerator, non-empty-string}>
+     * @psalm-return non-empty-list<array{ValueGenerator, non-empty-string}>
      */
     public static function validConstantTypes(): array
     {
         return [
             [
-                new PropertyValueGenerator([], ValueGenerator::TYPE_ARRAY, ValueGenerator::OUTPUT_SINGLE_LINE),
+                new ValueGenerator([], ValueGenerator::TYPE_ARRAY, ValueGenerator::OUTPUT_SINGLE_LINE),
                 '    public const FOO = [];',
             ],
             [
-                new PropertyValueGenerator(
+                new ValueGenerator(
                     [],
                     ValueGenerator::TYPE_ARRAY_LONG,
                     ValueGenerator::OUTPUT_SINGLE_LINE
@@ -98,23 +143,23 @@ class ValueGeneratorTest extends TestCase
                 '    public const FOO = array();',
             ],
             [
-                new PropertyValueGenerator(
+                new ValueGenerator(
                     [],
                     ValueGenerator::TYPE_ARRAY_SHORT,
                     ValueGenerator::OUTPUT_SINGLE_LINE
                 ),
                 '    public const FOO = [];',
             ],
-            [new PropertyValueGenerator(true, ValueGenerator::TYPE_BOOL), '    public const FOO = true;'],
-            [new PropertyValueGenerator(true, ValueGenerator::TYPE_BOOLEAN), '    public const FOO = true;'],
-            [new PropertyValueGenerator(1, ValueGenerator::TYPE_INT), '    public const FOO = 1;'],
-            [new PropertyValueGenerator(1, ValueGenerator::TYPE_INTEGER), '    public const FOO = 1;'],
-            [new PropertyValueGenerator(0.1, ValueGenerator::TYPE_DOUBLE), '    public const FOO = 0.1;'],
-            [new PropertyValueGenerator(0.1, ValueGenerator::TYPE_FLOAT), '    public const FOO = 0.1;'],
-            [new PropertyValueGenerator('bar', ValueGenerator::TYPE_STRING), "    public const FOO = 'bar';"],
-            [new PropertyValueGenerator(null, ValueGenerator::TYPE_NULL), '    public const FOO = null;'],
+            [new ValueGenerator(true, ValueGenerator::TYPE_BOOL), '    public const FOO = true;'],
+            [new ValueGenerator(true, ValueGenerator::TYPE_BOOLEAN), '    public const FOO = true;'],
+            [new ValueGenerator(1, ValueGenerator::TYPE_INT), '    public const FOO = 1;'],
+            [new ValueGenerator(1, ValueGenerator::TYPE_INTEGER), '    public const FOO = 1;'],
+            [new ValueGenerator(0.1, ValueGenerator::TYPE_DOUBLE), '    public const FOO = 0.1;'],
+            [new ValueGenerator(0.1, ValueGenerator::TYPE_FLOAT), '    public const FOO = 0.1;'],
+            [new ValueGenerator('bar', ValueGenerator::TYPE_STRING), "    public const FOO = 'bar';"],
+            [new ValueGenerator(null, ValueGenerator::TYPE_NULL), '    public const FOO = null;'],
             [
-                new PropertyValueGenerator('PHP_EOL', ValueGenerator::TYPE_CONSTANT),
+                new ValueGenerator('PHP_EOL', ValueGenerator::TYPE_CONSTANT),
                 '    public const FOO = PHP_EOL;',
             ],
         ];
